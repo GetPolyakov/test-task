@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import LocalStorageService from './shared/services/LocalStorageService';
-import DiscService from './disc/services/DiscService';
-class Disc extends Component {
+import LocalStorageService from '../../../shared/services/LocalStorageService';
+import DiscService from '../../services/DiscService';
+class DiscLayout extends Component {
     state = {
         folderData: []
     }
@@ -34,6 +34,6 @@ class Disc extends Component {
     }
 }
 
-Disc.propTypes = {};
+DiscLayout.propTypes = {};
 
-export default Disc;
+export default DiscLayout;
