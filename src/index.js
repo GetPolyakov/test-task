@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from "./store/configureStore";
 import { createBrowserHistory } from "history";
 import './shared/api/api.config'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const history = createBrowserHistory();
 ReactDOM.render(

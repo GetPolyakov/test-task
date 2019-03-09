@@ -1,16 +1,38 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import LocalStorageService from '../../../shared/services/LocalStorageService';
+import DiscNavbar from "../../components/DiscNavbar/DiscNavbar";
+import Resource from "../../components/Resource/Resource";
+import Folder from "../../components/Folder/Folder";
+import File from "../../components/File/File";
+
 import DiscService from '../../services/DiscService';
-class DiscLayout extends Component {
+
+import {RESOURCE_TYPE} from "../../constants";
+
+class DiscLayout extends PureComponent {
     state = {
         folderData: []
     }
     componentDidMount() {
-        const token = LocalStorageService.getItem('token');
-        // if (token) {
-            DiscService.getResources(token, '/', 100)
+        DiscService.getResources('/', 100)
+            .then((x) => {
+                this.setState({
+                    folderData: x.data._embedded.items
+                })
+            })
+            .catch((x) => {
+                console.log(x)
+            })
+    }
+
+    onFolderClicked = (folderId) => {
+        const clickedFolder = this.state.folderData.find((x) => x.resource_id === folderId);
+
+        if (!clickedFolder) {
+            console.error(`Clicked folder with ${folderId} is undefined`)
+        } else {
+            DiscService.getResources(clickedFolder.path, 100)
                 .then((x) => {
                     this.setState({
                         folderData: x.data._embedded.items
@@ -19,16 +41,40 @@ class DiscLayout extends Component {
                 .catch((x) => {
                     console.log(x)
                 })
-        // } else {
-        //     this.props.history.push('/login');
-        // }
-
+        }
     }
 
     render() {
         return (
-            <div style={{display: 'flex'}}>
-                {this.state.folderData.map(x => <span>{x.name}</span>)}
+            <div className="container">
+                <DiscNavbar/>
+                <div className="row">
+                    {
+                        this.state.folderData.map(x => {
+                                if (x.type === RESOURCE_TYPE.FOLDER) {
+                                    return(
+                                        <Resource key={x.resource_id}>
+                                            <Folder
+                                                name={x.name}
+                                                id={x.resource_id}
+                                                onFolderClicked={this.onFolderClicked}/>
+                                        </Resource>
+                                    )
+                                } else if (x.type === RESOURCE_TYPE.FILE) { //Вынести перевод в килобайты в маппиг
+                                    return(
+                                        <Resource key={x.resource_id}>
+                                            <File
+                                                name={x.name}
+                                                size={Math.round(x.size / 1024)}/>
+                                        </Resource>
+                                    )
+                                } else {
+                                    return null
+                                }
+                            }
+                        )
+                    }
+                </div>
             </div>
         );
     }
