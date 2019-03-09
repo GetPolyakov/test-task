@@ -1,19 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-const AUTH_URL = `https://oauth.yandex.ru/authorize?response_type=token&client_id=${process.env.REACT_APP_YANDEX_CLIENT_ID}`;
-const TOKEN_PARAM = 'access_token';
+import AuthService from './auth/services/AuthService';
 
 class Login extends Component {
-    state = {
-        token: null
-    }
-
-
     onLogin = () => {
-        const { token } = this.state;
-        const { history } = this.props;
-        window.location = AUTH_URL;
+        AuthService.onLogin()
     }
 
     render() {
@@ -23,7 +15,8 @@ class Login extends Component {
                     <button
                         onClick={this.onLogin}
                         type="button">
-                        login
+
+                        Login with Yandex
                     </button>
                 </div>
             </div>

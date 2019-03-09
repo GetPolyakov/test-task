@@ -20,7 +20,7 @@ class PrivateRoute extends Component {
 export const ProtectedRoute = connect(
     state => {
         return {
-            isAuthenticated: false
+            isAuthenticated: true
         }
     },
     dispatch => ({
