@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import DiscLayout from "./disc/containers/DiscLayout/DiscLayout";
+import AuthorizedLayout from "./AuthorizedLayout";
 import Login from "./auth/containers/Login/Login";
 import { ProtectedRoute } from './ProtectedRoute';
 import NotFound from "./NotFound";
@@ -22,8 +22,8 @@ class App extends Component {
     render() {
         return (
             <Switch>
-                <ProtectedRoute path="/" exact component={DiscLayout} />
                 <Route path="/login" exact component={Login} />
+                <ProtectedRoute path="\/(disc)?(/:folder+)?" component={AuthorizedLayout} />
                 <Route component={NotFound}/>
             </Switch>
         );
