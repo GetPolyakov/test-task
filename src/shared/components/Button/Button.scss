@@ -1,0 +1,21 @@
+.button {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+  border: 0;
+  text-decoration: none;
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  min-width: 120px;
+  border-radius: 5px;
+  padding: 8px 15px;
+  background-color: #698f38;
+  cursor: pointer;
+  -webkit-transition: background-color .25s, color .25s;
+  transition: background-color .25s, color .25s;
+  outline: 0;
+}

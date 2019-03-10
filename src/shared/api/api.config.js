@@ -1,7 +1,7 @@
 import axios from "axios";
 import { history } from "../../index";
 import LocalStorageService from '../services/LocalStorageService'
-import {KEY_OF_STORED_TOKEN} from "../../auth/constants";
+import { KEY_OF_STORED_TOKEN, UNAUTHORIZED_CODE } from "../../auth/constants";
 
 axios.defaults.baseURL = 'https://cloud-api.yandex.net/v1/disk/';
 axios.defaults.withCredentials = false;
@@ -21,10 +21,9 @@ axios.interceptors.request.use(function (config) {
 });
 
 
-const UNAUTHORIZED_CODE = 401;
 axios.interceptors.response.use(function (response) {
     return response;
-}, function (e) { //Сообщасть стору о тоам что чувак не автризован
+}, function (e) {
 
     if (e.response.status === UNAUTHORIZED_CODE) {
         LocalStorageService.removeItem(KEY_OF_STORED_TOKEN)

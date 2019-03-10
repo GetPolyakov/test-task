@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
-import Loader from "./shared/components/Loader/Loader";
+import Loader from "../../shared/components/Loader/Loader";
 
 
 const GetComponentForUserAuthStatus = ({ isAuthenticated, Component, componentProps }) => {
@@ -10,7 +10,8 @@ const GetComponentForUserAuthStatus = ({ isAuthenticated, Component, componentPr
     } else if (isAuthenticated === null) {
         return <Loader/>
     } else {
-    }   return <Redirect to="/login"/>
+        return <Redirect to="/login"/>
+    }
 }
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {

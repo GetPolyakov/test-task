@@ -2,9 +2,11 @@ import axios from 'axios'
 import {RESOURCE_TYPE} from "../constants";
 
 export default {
-    async getResources(path, limit) {
-        const response = await axios.get(`resources?path=${path}&limit=${limit}`)
-        return response.data;
+    getResources(path, limit = 40, offset = 0) {
+        return axios.get(`resources?path=${path}&limit=${limit}&offset=${offset}`)
+            .then((x) => {
+              return x.data;
+            })
     },
 
     mapResourcesToView(resource) {
