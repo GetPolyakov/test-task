@@ -5,7 +5,7 @@ import './File.scss';
 
 const File = ({name, size}) => {
     return (
-        <div className="file">
+        <div className="file d-flex flex-column">
             <i className="fa fa-file"></i>
             <div>{name}</div>
             <div>{size} KB</div>

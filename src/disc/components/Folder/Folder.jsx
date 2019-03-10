@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './Folder.scss'
 const Folder = ({ id, name, onFolderClicked }) => {
     return (
-        <div className="folder" onClick={() => onFolderClicked(id)}>
+        <div className="folder d-flex flex-column" onClick={() => onFolderClicked(id)}>
             <i className="fa fa-folder"></i>
             <div>{name}</div>
         </div>

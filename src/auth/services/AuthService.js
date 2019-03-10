@@ -3,8 +3,8 @@ import {getQueryParams} from "../../shared/utils/utils";
 const TOKEN_PARAM = 'access_token';
 
 export default {
-    getTokenFromHash(hash) {
-        const queryParamsString = hash.substring(1);
+    getTokenFromUrlHash(urlHash) {
+        const queryParamsString = urlHash.substring(1);
         const queryParams = getQueryParams(queryParamsString)
         if (queryParams.length === 0) {
             return null;

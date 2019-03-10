@@ -12,7 +12,7 @@ import LocalStorageService from './shared/services/LocalStorageService';
 class App extends Component {
     componentDidMount() {
         const { location, history } = this.props;
-        const token = AuthService.getTokenFromHash(location.hash)
+        const token = AuthService.getTokenFromUrlHash(location.hash)
         if (token) {
             LocalStorageService.setItem('token', token)
             history.push('/')

@@ -28,19 +28,32 @@ class DiscLayout extends PureComponent {
 
     _fetchResources = async () => {
         try {
-            const { location } = this.props;
-            let path = '';
-            if (location.pathname === '/disc') {
-                path = '/'
-            } else {
-                path = location.pathname.replace('/disc', '')
-            }
+            const { location, history } = this.props;
+
+            const resourcePath = this._getRequestedResourcePathByUrl(location.pathname);
+
             this.setState({isLoading: true})
-            const data = await DiscService.getResources(path, 100);
-            this.setState({data: data.data._embedded.items})
+
+            const resource = await DiscService.getResources(resourcePath, 100);
+            if (resource.type === RESOURCE_TYPE.FOLDER) {
+                const mappedResource = DiscService.mapResourcesToView(resource);
+                this.setState({data: mappedResource._embedded.items})
+            } else {
+               history.goBack()
+            }
+
             this.setState({isLoading: false})
         } catch (e) {
-            console.log(e) //доделать обработку ошибок
+            alert('Something went wrong, please make sure you have stable connection to the internet.')
+            console.error(e);
+        }
+    }
+
+    _getRequestedResourcePathByUrl = (url) => {
+        if (url === '/disc') {
+            return '/'
+        } else {
+            return url.replace('/disc', '')
         }
     }
 
@@ -79,12 +92,12 @@ class DiscLayout extends PureComponent {
                                                         onFolderClicked={this.onFolderClicked}/>
                                                 </Resource>
                                             )
-                                        } else if (x.type === RESOURCE_TYPE.FILE) { //Вынести перевод в килобайты в маппиг
+                                        } else if (x.type === RESOURCE_TYPE.FILE) {
                                             return(
                                                 <Resource key={x.resource_id}>
                                                     <File
                                                         name={x.name}
-                                                        size={Math.round(x.size / 1024)}/>
+                                                        size={x.size}/>
                                                 </Resource>
                                             )
                                         } else {
