@@ -5,8 +5,8 @@ import './Folder.scss'
 const Folder = ({ id, name, onFolderClicked }) => {
     return (
         <div className="folder" onClick={() => onFolderClicked(id)}>
-            <span className="glyphicon glyphicon-folder-open"></span>
-            {name}
+            <i className="fa fa-folder"></i>
+            <div>{name}</div>
         </div>
     );
 };

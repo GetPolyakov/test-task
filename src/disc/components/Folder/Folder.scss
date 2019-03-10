@@ -1,7 +1,9 @@
 .folder {
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
-  .glyphicon {
-    display: block;
+
+  .fa-folder {
     font-size: 50px;
   }
 }

@@ -6,7 +6,7 @@ import './File.scss';
 const File = ({name, size}) => {
     return (
         <div className="file">
-            <span className="glyphicon glyphicon-folder-open"></span>
+            <i className="fa fa-file"></i>
             <div>{name}</div>
             <div>{size} KB</div>
         </div>

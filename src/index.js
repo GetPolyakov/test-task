@@ -8,6 +8,7 @@ import { store } from "./store/configureStore";
 import { createBrowserHistory } from "history";
 import './shared/api/api.config'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.min.css';
 
 export const history = createBrowserHistory();
 ReactDOM.render(
