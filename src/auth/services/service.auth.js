@@ -1,6 +1,5 @@
-import {getQueryParams} from "../../shared/utils/utils";
-
-const TOKEN_PARAM = 'access_token';
+import { getQueryParams } from "../../shared/utils/utils";
+import { TOKEN_PARAM } from "../constants";
 
 export default {
     getTokenFromUrlHash(urlHash) {

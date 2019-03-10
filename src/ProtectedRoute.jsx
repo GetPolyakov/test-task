@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
+import Loader from "./shared/components/Loader/Loader";
 
 
-class PrivateRoute extends Component {
+const GetComponentForUserAuthStatus = ({ isAuthenticated, Component, componentProps }) => {
+    if (isAuthenticated) {
+        return <Component {...componentProps}/>
+    } else if (isAuthenticated === null) {
+        return <Loader/>
+    } else {
+    }   return <Redirect to="/login"/>
+}
 
-
-    render() {
-        const { component: Component, isAuthenticated, ...rest } = this.props;
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
         return (<Route {...rest} render={(props) => (
-            isAuthenticated ?
-                <Component {...props} />
-                :
-                <Redirect to="/login"/>
+            <GetComponentForUserAuthStatus isAuthenticated={isAuthenticated} Component={Component} componentProps={props} />
         )} />)
     }
-}
 
 export const ProtectedRoute = connect(
     state => {
         return {
-            isAuthenticated: true
+            isAuthenticated: state.auth.isAuthenticated
         }
     },
     dispatch => ({

@@ -1,4 +1,3 @@
-
 export default {
     getItem(key) {
         const data = localStorage.getItem(key);
@@ -8,5 +7,9 @@ export default {
     setItem(key, value) {
         const data = JSON.stringify(value)
         localStorage.setItem(key, data)
+    },
+
+    removeItem(key) {
+        localStorage.removeItem(key);
     }
 };

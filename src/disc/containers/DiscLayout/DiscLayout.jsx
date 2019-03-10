@@ -6,7 +6,7 @@ import Resource from "../../components/Resource/Resource";
 import Folder from "../../components/Folder/Folder";
 import File from "../../components/File/File";
 
-import DiscService from '../../services/DiscService';
+import DiscService from '../../services/service.disc';
 
 import {RESOURCE_TYPE} from "../../constants";
 import Loader from "../../../shared/components/Loader/Loader";

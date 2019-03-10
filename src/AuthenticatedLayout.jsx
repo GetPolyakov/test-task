@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import DiscLayout from "./disc/containers/DiscLayout/DiscLayout";
 
-const AuthorizedLayout = props => {
+const AuthenticatedLayout = props => {
     return (
         <Switch>
             <Route path="/disc(/:folder+)?" component={DiscLayout} />
@@ -13,8 +13,8 @@ const AuthorizedLayout = props => {
     );
 };
 
-AuthorizedLayout.propTypes = {
+AuthenticatedLayout.propTypes = {
     
 };
 
-export default AuthorizedLayout;
+export default AuthenticatedLayout;

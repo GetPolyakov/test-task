@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import AuthService from '../../services/AuthService';
+import AuthService from '../../services/service.auth';
 
 class Login extends Component {
     onLogin = () => {
