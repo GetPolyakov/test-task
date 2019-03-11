@@ -39,7 +39,7 @@ export class DiscLayout extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps !== this.props) {
+        if (prevProps !== this.props) { //указать точно
           this._fetchResources();
         }
     }
@@ -223,4 +223,6 @@ export class DiscLayout extends Component {
     }
 }
 
-DiscLayout.propTypes = {};
+DiscLayout.propTypes = {
+
+};

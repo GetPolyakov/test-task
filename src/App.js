@@ -8,26 +8,17 @@ import { ProtectedRoute } from './auth/components/ProtectedRoute/ProtectedRoute'
 
 import { setIsUserAuthorized } from './auth/actions/action.set-is-user-authorized.js'
 import { AuthService } from './auth/services/service.auth';
-import { LocalStorageService } from './shared/services/LocalStorageService';
-
-import { KEY_OF_STORED_TOKEN } from "./auth/constants";
 
 class App extends Component {
 
     componentDidMount() {
         const { location, history, setIsUserAuthorized } = this.props;
-        const token = AuthService.getTokenFromUrlHash(location.hash)
-        if (token) {
-            LocalStorageService.setItem(KEY_OF_STORED_TOKEN, token)
+        const isAuthorized = AuthService.tryAuth(location.hash)
+        if (isAuthorized) {
             setIsUserAuthorized(true);
             history.push('/')
         } else {
-            const token = LocalStorageService.getItem(KEY_OF_STORED_TOKEN);
-            if (token) {
-                setIsUserAuthorized(true);
-            } else {
-                setIsUserAuthorized(false);
-            }
+            setIsUserAuthorized(false);
         }
     }
 

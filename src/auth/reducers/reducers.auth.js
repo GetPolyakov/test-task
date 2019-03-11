@@ -1,7 +1,8 @@
 import { AuthActionTypes } from "../actions/action.types";
 
 const initialState = {
-    isAuthorized: null
+    isAuthorized: false,
+    isLoading: true
 }
 
 export function auth (state = initialState, action) {
@@ -9,7 +10,8 @@ export function auth (state = initialState, action) {
         case AuthActionTypes.SET_IS_USER_AUTHORIZED: {
             return {
                 ...state,
-                isAuthorized: action.payload.isAuthorized
+                isAuthorized: action.payload.isAuthorized,
+                isLoading: false
             }
         }
     }

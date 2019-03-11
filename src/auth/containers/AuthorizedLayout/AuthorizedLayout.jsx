@@ -6,15 +6,14 @@ import PropTypes from 'prop-types';
 import { DiscLayout } from "../../../disc/containers/DiscLayout/DiscLayout";
 import { ApplicationNavbar } from "../../../shared/components/ApplicationNavbar/ApplicationNavbar";
 
-import { LocalStorageService } from "../../../shared/services/LocalStorageService";
-import { KEY_OF_STORED_TOKEN } from "../../constants";
 import { setIsUserAuthorized } from "../../actions/action.set-is-user-authorized";
+import {AuthService} from "../../services/service.auth";
 
 class AuthLayout extends Component  {
 
     onLogout = () => {
         const { history, setIsUserAuthorized } = this.props;
-        LocalStorageService.removeItem(KEY_OF_STORED_TOKEN);
+        AuthService.onLogout();
         setIsUserAuthorized(false);
         history.push('/login')
     }

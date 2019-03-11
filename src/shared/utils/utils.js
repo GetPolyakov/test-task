@@ -1,4 +1,4 @@
-export const getQueryParams = (queryParamsString) => { //оптимизировать не безопасный код
+export const getQueryParams = (queryParamsString) => {
     if (queryParamsString.length === 0) {
         return [];
     }
