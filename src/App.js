@@ -6,19 +6,20 @@ import { AuthorizedLayout } from "./auth/containers/AuthorizedLayout/AuthorizedL
 import { Login } from "./auth/containers/Login/Login";
 import { ProtectedRoute } from './auth/components/ProtectedRoute/ProtectedRoute';
 
-import { setIsUserAuthorized } from './auth/actions/action.set-is-user-authorized.js'
-import { AuthService } from './auth/services/service.auth';
+import { setIsUserAuth } from './auth/actions/action.set-is-user-auth.js'
+
+import { AuthService } from "./auth/services/service.auth";
 
 class App extends Component {
 
     componentDidMount() {
-        const { location, history, setIsUserAuthorized } = this.props;
+        const { location, history, setIsUserAuth } = this.props;
         const isAuthorized = AuthService.tryAuth(location.hash)
         if (isAuthorized) {
-            setIsUserAuthorized(true);
+            setIsUserAuth(isAuthorized)
             history.push('/')
         } else {
-            setIsUserAuthorized(false);
+            setIsUserAuth(isAuthorized)
         }
     }
 
@@ -37,6 +38,6 @@ class App extends Component {
 export default withRouter(connect(
     state => ({}),
     dispatch => ({
-        setIsUserAuthorized: (isAuthorized) => dispatch(setIsUserAuthorized(isAuthorized))
+        setIsUserAuth: (urlHash) => dispatch(setIsUserAuth(urlHash))
     })
 )(App));

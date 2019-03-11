@@ -6,15 +6,16 @@ import PropTypes from 'prop-types';
 import { DiscLayout } from "../../../disc/containers/DiscLayout/DiscLayout";
 import { ApplicationNavbar } from "../../../shared/components/ApplicationNavbar/ApplicationNavbar";
 
-import { setIsUserAuthorized } from "../../actions/action.set-is-user-authorized";
+import { setIsUserAuth } from "../../actions/action.set-is-user-auth";
+
 import {AuthService} from "../../services/service.auth";
 
 class AuthLayout extends Component  {
 
     onLogout = () => {
-        const { history, setIsUserAuthorized } = this.props;
+        const { history, setIsUserAuth } = this.props;
         AuthService.onLogout();
-        setIsUserAuthorized(false);
+        setIsUserAuth(false);
         history.push('/login')
     }
 
@@ -39,6 +40,6 @@ AuthLayout.propTypes = {
 export const AuthorizedLayout = connect(
     state => ({}),
     dispatch => ({
-        setIsUserAuthorized: (isAuthorized) => dispatch(setIsUserAuthorized(isAuthorized))
+        setIsUserAuth: (isAuthorized) => dispatch(setIsUserAuth(isAuthorized))
     })
 )(AuthLayout);

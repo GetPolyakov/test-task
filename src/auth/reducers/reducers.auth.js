@@ -7,7 +7,7 @@ const initialState = {
 
 export function auth (state = initialState, action) {
     switch (action.type) {
-        case AuthActionTypes.SET_IS_USER_AUTHORIZED: {
+        case AuthActionTypes.SET_IS_USER_AUTH: {
             return {
                 ...state,
                 isAuthorized: action.payload.isAuthorized,
