@@ -4,26 +4,26 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import Loader from "../../../shared/components/Loader/Loader";
 
 
-const GetComponentForUserAuthStatus = ({ isAuthenticated, Component, componentProps }) => {
-    if (isAuthenticated) {
+const GetComponentForUserAuthStatus = ({ isAuthorized, Component, componentProps }) => {
+    if (isAuthorized) {
         return <Component {...componentProps}/>
-    } else if (isAuthenticated === null) {
+    } else if (isAuthorized === null) {
         return <Loader/>
     } else {
         return <Redirect to="/login"/>
     }
 }
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
+const PrivateRoute = ({ component: Component, isAuthorized, ...rest }) => {
         return (<Route {...rest} render={(props) => (
-            <GetComponentForUserAuthStatus isAuthenticated={isAuthenticated} Component={Component} componentProps={props} />
+            <GetComponentForUserAuthStatus isAuthorized={isAuthorized} Component={Component} componentProps={props} />
         )} />)
     }
 
 export const ProtectedRoute = connect(
     state => {
         return {
-            isAuthenticated: state.auth.isAuthenticated
+            isAuthorized: state.auth.isAuthorized
         }
     },
     dispatch => ({

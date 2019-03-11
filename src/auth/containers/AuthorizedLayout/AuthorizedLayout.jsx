@@ -8,14 +8,14 @@ import ApplicationNavbar from "../../../shared/components/ApplicationNavbar/Appl
 
 import LocalStorageService from "../../../shared/services/LocalStorageService";
 import {KEY_OF_STORED_TOKEN} from "../../constants";
-import setIsUserAuthenticated from "../../actions/action.set-is-user-authenticated";
+import setIsUserAuthorized from "../../actions/action.set-is-user-authorized";
 
-class AuthenticatedLayout extends Component  {
+class AuthorizedLayout extends Component  {
 
     onLogout = () => {
-        const { history, setIsUserAuthenticated } = this.props;
+        const { history, setIsUserAuthorized } = this.props;
         LocalStorageService.removeItem(KEY_OF_STORED_TOKEN);
-        setIsUserAuthenticated(false);
+        setIsUserAuthorized(false);
         history.push('/login')
     }
 
@@ -33,13 +33,13 @@ class AuthenticatedLayout extends Component  {
     }
 };
 
-AuthenticatedLayout.propTypes = {
+AuthorizedLayout.propTypes = {
 
 };
 
 export default connect(
     state => ({}),
     dispatch => ({
-        setIsUserAuthenticated: (isAuthenticated) => dispatch(setIsUserAuthenticated(isAuthenticated))
+        setIsUserAuthorized: (isAuthorized) => dispatch(setIsUserAuthorized(isAuthorized))
     })
-)(AuthenticatedLayout);
+)(AuthorizedLayout);

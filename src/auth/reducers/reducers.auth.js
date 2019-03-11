@@ -1,15 +1,15 @@
 import { AuthActionTypes } from "../actions/action.types";
 
 const initialState = {
-    isAuthenticated: null
+    isAuthorized: null
 }
 
 export default function auth (state = initialState, action) {
     switch (action.type) {
-        case AuthActionTypes.SET_IS_USER_AUTHENTICATED: {
+        case AuthActionTypes.SET_IS_USER_AUTHORIZED: {
             return {
                 ...state,
-                isAuthenticated: action.payload.isAuthenticated
+                isAuthorized: action.payload.isAuthorized
             }
         }
     }
