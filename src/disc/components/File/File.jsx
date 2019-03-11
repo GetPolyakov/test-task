@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './File.scss';
+import { FileIcon } from "./FileIcon/FileIcon";
 
 const File = ({name, size}) => {
     return (
         <div className="file d-flex flex-column">
-            <i className="fa fa-file"></i>
+            <FileIcon />
             <div>{name}</div>
             <div>{size} KB</div>
         </div>

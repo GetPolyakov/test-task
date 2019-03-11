@@ -1,0 +1,20 @@
+.breadcrumbs {
+  margin-bottom: 15px;
+  background: #fff;
+}
+
+.breadcrumb {
+  display: inline-block;
+  color: #007bff;
+}
+
+.breadcrumb::before {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+  content: "/";
+}
+
+.breadcrumb.active {
+  color: #818a91;
+}

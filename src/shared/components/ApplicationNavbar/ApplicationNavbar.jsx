@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Logout } from "./Logout/Logout";
+
 import './ApplicationNavbar.scss';
 
 const ApplicationNavbar = ({ text = '', onLogout }) => {
     return (
         <div className="application-navbar d-flex  justify-content-between">
             <div>{ text }</div>
-            <i className="fa fa-sign-out" onClick={ onLogout }></i>
+            <Logout onLogout={onLogout}/>
         </div>
     );
 };

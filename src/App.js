@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import AuthenticatedLayout from "./auth/containers/AuthenticatedLayout/AuthenticatedLayout";
 import Login from "./auth/containers/Login/Login";
-import { ProtectedRoute } from './auth/components/ProtectedRoute';
-import NotFound from "./shared/components/NotFound/NotFound";
+import { ProtectedRoute } from './auth/components/ProtectedRoute/ProtectedRoute';
 
 import setIsUserAuthenticated from './auth/actions/action.set-is-user-authenticated.js'
 import AuthService from './auth/services/service.auth';
@@ -37,7 +36,7 @@ class App extends Component {
             <Switch>
                 <Route path="/login" exact component={Login} />
                 <ProtectedRoute path="\/(disc)?(/:folder+)?" component={AuthenticatedLayout} />
-                <Route component={NotFound}/>
+                <Redirect to="/login"/>
             </Switch>
         );
     }

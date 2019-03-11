@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
-import Loader from "../../shared/components/Loader/Loader";
+import Loader from "../../../shared/components/Loader/Loader";
 
 
 const GetComponentForUserAuthStatus = ({ isAuthenticated, Component, componentProps }) => {

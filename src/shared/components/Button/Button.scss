@@ -1,21 +1,22 @@
+@import "../../css/variables";
+
 .button {
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 500;
-  border: 0;
-  text-decoration: none;
-  color: #fff;
-  white-space: nowrap;
-  text-align: center;
   display: inline-block;
-  vertical-align: middle;
   overflow: hidden;
   min-width: 120px;
-  border-radius: 5px;
   padding: 8px 15px;
-  background-color: #698f38;
+  border: 0;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+  background-color: $primary-color;
   cursor: pointer;
-  -webkit-transition: background-color .25s, color .25s;
   transition: background-color .25s, color .25s;
   outline: 0;
 }
