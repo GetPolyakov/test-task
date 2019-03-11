@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 
-import DiscNavbar from "../../components/DiscNavbar/DiscNavbar";
-import Resource from "../../components/Resource/Resource";
-import Folder from "../../components/Folder/Folder";
-import File from "../../components/File/File";
-import Loader from "../../../shared/components/Loader/Loader";
+import { DiscNavbar } from "../../components/DiscNavbar/DiscNavbar";
+import { Resource } from "../../components/Resource/Resource";
+import { Folder } from "../../components/Folder/Folder";
+import { File } from "../../components/File/File";
+import { Loader } from "../../../shared/components/Loader/Loader";
 import { InfiniteScroll } from "../../../shared/components/InfiniteScroll/InfiniteScroll";
 
-import DiscService from '../../services/service.disc';
+import { DiscService } from '../../services/service.disc';
 
 import { RESOURCE_TYPE } from "../../constants";
 import { NOT_FOUND_CODE, UNAUTHORIZED_CODE } from "../../../auth/constants";
@@ -19,7 +19,7 @@ import './DiscLayout.scss';
 const DEBOUNCE_DELAY = 700;
 const DEFAULT_URL = '/disc';
 
-class DiscLayout extends PureComponent {
+export class DiscLayout extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -224,5 +224,3 @@ class DiscLayout extends PureComponent {
 }
 
 DiscLayout.propTypes = {};
-
-export default DiscLayout;

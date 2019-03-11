@@ -5,7 +5,7 @@ import FolderIcon from "./FolderIcon/FolderIcon";
 
 import './Folder.scss'
 
-const Folder = ({ id, name, onFolderClicked }) => {
+export const Folder = ({ id, name, onFolderClicked }) => {
     return (
         <div className="folder d-flex flex-column" onClick={() => onFolderClicked(id)}>
             <FolderIcon/>
@@ -20,5 +20,3 @@ Folder.propTypes = {
 
     onFolderClicked: PropTypes.func
 };
-
-export default Folder;

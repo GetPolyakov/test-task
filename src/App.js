@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import AuthorizedLayout from "./auth/containers/AuthorizedLayout/AuthorizedLayout";
-import Login from "./auth/containers/Login/Login";
+import { AuthorizedLayout } from "./auth/containers/AuthorizedLayout/AuthorizedLayout";
+import { Login } from "./auth/containers/Login/Login";
 import { ProtectedRoute } from './auth/components/ProtectedRoute/ProtectedRoute';
 
-import setIsUserAuthorized from './auth/actions/action.set-is-user-authorized.js'
-import AuthService from './auth/services/service.auth';
-import LocalStorageService from './shared/services/LocalStorageService';
+import { setIsUserAuthorized } from './auth/actions/action.set-is-user-authorized.js'
+import { AuthService } from './auth/services/service.auth';
+import { LocalStorageService } from './shared/services/LocalStorageService';
 
-import {KEY_OF_STORED_TOKEN} from "./auth/constants";
+import { KEY_OF_STORED_TOKEN } from "./auth/constants";
 
 class App extends Component {
 

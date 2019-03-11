@@ -1,7 +1,7 @@
 import { AuthActionTypes } from "./action.types";
 
 
-export default function setIsUserAuthorized(isAuthorized) {
+export function setIsUserAuthorized(isAuthorized) {
     return {
         type: AuthActionTypes.SET_IS_USER_AUTHORIZED,
         payload: {

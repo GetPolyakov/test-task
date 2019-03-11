@@ -1,7 +1,7 @@
 import { getQueryParams } from "../../shared/utils/utils";
 import { TOKEN_PARAM } from "../constants";
 
-export default {
+export const AuthService = {
     getTokenFromUrlHash(urlHash) {
         const queryParamsString = urlHash.substring(1);
         const queryParams = getQueryParams(queryParamsString)

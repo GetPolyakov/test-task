@@ -1,6 +1,6 @@
 import axios from "axios";
 import { history } from "../../index";
-import LocalStorageService from '../services/LocalStorageService'
+import { LocalStorageService } from '../services/LocalStorageService'
 import { KEY_OF_STORED_TOKEN, UNAUTHORIZED_CODE } from "../../auth/constants";
 
 axios.defaults.baseURL = 'https://cloud-api.yandex.net/v1/disk/';

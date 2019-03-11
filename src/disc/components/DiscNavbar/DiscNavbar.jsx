@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Breadcrumbs } from '../../../shared/components/Breadcrumbs/Breadcrumbs'
 
-const DiscNavbar = props => {
+export const DiscNavbar = props => {
     return (
         <nav className='disc-navbar'>
             <div className="container-fluid breadcrumbs d-flex">
@@ -17,5 +17,3 @@ const DiscNavbar = props => {
 DiscNavbar.propTypes = {
     
 };
-
-export default DiscNavbar;

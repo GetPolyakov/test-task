@@ -1,4 +1,4 @@
-export default {
+export const LocalStorageService = {
     getItem(key) {
         const data = localStorage.getItem(key);
         return JSON.parse(data);

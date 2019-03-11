@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
-import DiscLayout from "../../../disc/containers/DiscLayout/DiscLayout";
-import ApplicationNavbar from "../../../shared/components/ApplicationNavbar/ApplicationNavbar";
+import { DiscLayout } from "../../../disc/containers/DiscLayout/DiscLayout";
+import { ApplicationNavbar } from "../../../shared/components/ApplicationNavbar/ApplicationNavbar";
 
-import LocalStorageService from "../../../shared/services/LocalStorageService";
-import {KEY_OF_STORED_TOKEN} from "../../constants";
-import setIsUserAuthorized from "../../actions/action.set-is-user-authorized";
+import { LocalStorageService } from "../../../shared/services/LocalStorageService";
+import { KEY_OF_STORED_TOKEN } from "../../constants";
+import { setIsUserAuthorized } from "../../actions/action.set-is-user-authorized";
 
-class AuthorizedLayout extends Component  {
+class AuthLayout extends Component  {
 
     onLogout = () => {
         const { history, setIsUserAuthorized } = this.props;
@@ -33,13 +33,13 @@ class AuthorizedLayout extends Component  {
     }
 };
 
-AuthorizedLayout.propTypes = {
+AuthLayout.propTypes = {
 
 };
 
-export default connect(
+export const AuthorizedLayout = connect(
     state => ({}),
     dispatch => ({
         setIsUserAuthorized: (isAuthorized) => dispatch(setIsUserAuthorized(isAuthorized))
     })
-)(AuthorizedLayout);
+)(AuthLayout);

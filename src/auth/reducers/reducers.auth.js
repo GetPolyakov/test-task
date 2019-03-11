@@ -4,7 +4,7 @@ const initialState = {
     isAuthorized: null
 }
 
-export default function auth (state = initialState, action) {
+export function auth (state = initialState, action) {
     switch (action.type) {
         case AuthActionTypes.SET_IS_USER_AUTHORIZED: {
             return {

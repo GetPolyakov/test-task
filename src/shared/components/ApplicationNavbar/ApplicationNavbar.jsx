@@ -5,7 +5,7 @@ import { Logout } from "./Logout/Logout";
 
 import './ApplicationNavbar.scss';
 
-const ApplicationNavbar = ({ text = '', onLogout }) => {
+export const ApplicationNavbar = ({ text = '', onLogout }) => {
     return (
         <div className="application-navbar d-flex  justify-content-between">
             <div>{ text }</div>
@@ -19,5 +19,3 @@ ApplicationNavbar.propTypes = {
 
     onLogout: PropTypes.func
 };
-
-export default ApplicationNavbar;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { FileIcon } from "./FileIcon/FileIcon";
 
-const File = ({name, size}) => {
+export const File = ({name, size}) => {
     return (
         <div className="file d-flex flex-column">
             <FileIcon />
@@ -17,5 +17,3 @@ File.propTypes = {
     name: PropTypes.string,
     size: PropTypes.number
 };
-
-export default File;
