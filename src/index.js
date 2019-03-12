@@ -2,20 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from "./store/store-config";
-import { createBrowserHistory } from "history";
 import './shared/api/api.config'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css';
 
-export const history = createBrowserHistory();
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={history}>
+        <BrowserRouter>
             <App />
-        </Router>
+        </BrowserRouter>
     </Provider>
     ,
     document.getElementById("root"));

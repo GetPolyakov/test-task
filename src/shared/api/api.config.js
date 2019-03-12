@@ -1,7 +1,6 @@
 import axios from "axios";
-import { history } from "../../index";
-import { ServiceLocalStorage } from '../services/service.local-storage'
-import { KEY_OF_STORED_TOKEN, UNAUTHORIZED_CODE } from "../../auth/constants";
+import { AuthService } from "../../auth/services/service.auth";
+import { UNAUTHORIZED_CODE } from "../../auth/constants";
 
 axios.defaults.baseURL = 'https://cloud-api.yandex.net/v1/disk/';
 axios.defaults.withCredentials = false;
@@ -9,7 +8,7 @@ axios.defaults.headers['Accept'] = 'application/json';
 axios.defaults.headers['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use(function (config) {
-    const token = ServiceLocalStorage.getItem(KEY_OF_STORED_TOKEN);
+    const token = AuthService.getToken();
     if (token) {
         config.headers['Authorization'] = token
     } else {
@@ -26,8 +25,8 @@ axios.interceptors.response.use(function (response) {
 }, function (e) {
 
     if (e.response.status === UNAUTHORIZED_CODE) {
-        ServiceLocalStorage.removeItem(KEY_OF_STORED_TOKEN)
-        history.push('/login')
+        AuthService.removeToken();
+        AuthService.redirectToLogin();
     }
     return Promise.reject(e);
 });
