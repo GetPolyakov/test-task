@@ -1,5 +1,6 @@
 import { DiscActionTypes } from "./action.types";
 import { DiscService } from "../services/service.disc";
+import {NOT_FOUND_CODE, UNAUTHORIZED_CODE} from "../../auth/constants";
 
 function started() {
     return {
@@ -28,9 +29,20 @@ export function fetchResourcesMore(resourcePath, limit, offset) {
             const resources = await DiscService.getResources(resourcePath, limit, offset);
             dispatch(successed(resources));
         }
-        catch (error) {
-            dispatch(failed(error.response.data));
-            throw error.response.data;
+        catch (e) {
+            if (e.response !== undefined) {
+                const responseStatus = e.response.status;
+                if (responseStatus === UNAUTHORIZED_CODE) {
+                    dispatch(failed('Unauthorized'));
+                    return;
+                }
+                if (responseStatus === NOT_FOUND_CODE) {
+                    dispatch(failed('Resource not found'));
+                    return;
+                }
+            }
+            dispatch(failed('Something went wrong, please make sure you have stable connection to the internet.'));
+            throw e
         }
     }
 }

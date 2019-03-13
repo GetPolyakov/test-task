@@ -9,10 +9,14 @@ import './shared/api/api.config'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css';
 
+import { ErrorBoundary } from "./shared/components/ErrorBoundary/ErrorBoundary";
+
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
         </BrowserRouter>
     </Provider>
     ,

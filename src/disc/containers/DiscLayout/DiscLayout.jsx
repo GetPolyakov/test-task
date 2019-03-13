@@ -10,6 +10,7 @@ import { Folder } from "../../components/Folder/Folder";
 import { File } from "../../components/File/File";
 import { Loader } from "../../../shared/components/Loader/Loader";
 import { InfiniteScroll } from "../../../shared/components/InfiniteScroll/InfiniteScroll";
+import { ExpectedError } from "../../../shared/components/ExpectedError/ExpectedError";
 
 import { resourcesSelector } from "../../selectors/selector.resources";
 import { fetchResources } from "../../actions/action.fetch-resources";
@@ -38,7 +39,7 @@ class Disc extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.location.pathname !== this.props.location.pathname) { //указать точно
+        if (prevProps.location.pathname !== this.props.location.pathname) {
           this.fetchResources();
         }
     }
@@ -52,16 +53,18 @@ class Disc extends Component {
             await fetchResources(resourcePath, limit);
 
         } catch (e) {
-            const responseStatus = e.response.status;
-            if (responseStatus === UNAUTHORIZED_CODE) {
-                return;
+            if (e.response !== undefined) {
+                const responseStatus = e.response.status;
+                if (responseStatus === UNAUTHORIZED_CODE) {
+                    return;
+                }
+                if (responseStatus === NOT_FOUND_CODE) {
+                    this.props.history.push(DEFAULT_URL);
+                    return;
+                }
             }
-            if (responseStatus === NOT_FOUND_CODE) {
-                this.props.history.push(DEFAULT_URL);
-            } else {
-                alert('Something went wrong, please make sure you have stable connection to the internet.')
-                console.error(e);
-            }
+
+            console.error(e);
         }
     }
 
@@ -76,18 +79,21 @@ class Disc extends Component {
             }
 
         } catch (e) {
-            const responseStatus = e.response.status;
-            if (responseStatus === UNAUTHORIZED_CODE) {
-                return;
+            if (e.response !== undefined) {
+                const responseStatus = e.response.status;
+                if (responseStatus === UNAUTHORIZED_CODE) {
+                    return;
+                }
+                if (responseStatus === NOT_FOUND_CODE) {
+                    this.props.history.push(DEFAULT_URL);
+                    return;
+                }
             }
-            if (responseStatus === NOT_FOUND_CODE) {
-                this.props.history.push(DEFAULT_URL);
-            } else {
-                alert('Something went wrong, please make sure you have stable connection to the internet.')
-                console.error(e);
-            }
+
+            console.error(e);
         }
     }
+
 
     _getRequestedResourcePathByUrl = (url) => {
         if (url === DEFAULT_URL) {
@@ -110,7 +116,15 @@ class Disc extends Component {
     }
 
     render() {
-        const { resources, isLoading, isScrollLoading, hasMoreRecords } = this.props;
+        const { resources, isLoading, isScrollLoading, hasMoreRecords, error} = this.props;
+
+        if (error) {
+            return (<ExpectedError message={error} />)
+        }
+
+        if (!Object.keys(resources).length !== 0 && resources.type === ResourceType.FILE) {
+            return (<Redirect to={DEFAULT_URL}/>)
+        }
 
         return (
             <div className="container d-flex flex-column disc-layout">
@@ -127,7 +141,6 @@ class Disc extends Component {
                                 shouldHandleScroll={hasMoreRecords}
                             >
                                 {
-                                    (resources.type !== ResourceType.FILE) ? //обработать пустой обджект и состояние еррор
                                     resources._embedded.items.map(x => {
                                             if (x.type === ResourceType.FOLDER) {
                                                 return(
@@ -151,8 +164,6 @@ class Disc extends Component {
                                             }
                                         }
                                     )
-
-                                    : <Redirect to={DEFAULT_URL} />
                                 }
                             </InfiniteScroll>
                             {
@@ -177,6 +188,7 @@ export const DiscLayout = connect(
             isLoading: state.resources.isLoading,
             isScrollLoading: state.resources.isScrollLoading,
             hasMoreRecords: state.resources.hasMoreRecords,
+            error: state.resources.error
         }
     },
     dispatch => ({
@@ -192,6 +204,7 @@ Disc.propTypes = {
     isLoading: PropTypes.bool,
     isScrollLoading: PropTypes.bool,
     hasMoreRecords: PropTypes.bool,
+    error: PropTypes.string,
     history: PropTypes.object,
     location: PropTypes.object,
     match: PropTypes.object

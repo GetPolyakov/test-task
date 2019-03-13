@@ -8,6 +8,7 @@ const initialState = {
     isLoading: true,
     isScrollLoading: false,
     hasMoreRecords: false,
+    error: ''
 }
 
 export function resources (state = initialState, action) {
@@ -15,6 +16,7 @@ export function resources (state = initialState, action) {
         case DiscActionTypes.FETCH_RESOURCES_STARTED: {
             return {
                 ...state,
+                error: '',
                 isLoading: true
             }
         }
@@ -22,7 +24,8 @@ export function resources (state = initialState, action) {
         case DiscActionTypes.FETCH_RESOURCES_FAILED: {
             return {
                 ...state,
-                isLoading: false
+                isLoading: false,
+                error: action.error
             }
         }
 
@@ -36,6 +39,7 @@ export function resources (state = initialState, action) {
                 if (embeddedItems.length < total) {
                         return {
                             ...state,
+                            error: '',
                             offset: state.offset + state.limit,
                             hasMoreRecords: true,
                             isLoading: false,
@@ -44,6 +48,7 @@ export function resources (state = initialState, action) {
                 } else {
                     return {
                         ...state,
+                        error: '',
                         resources,
                         hasMoreRecords: false,
                         isLoading: false
@@ -53,6 +58,7 @@ export function resources (state = initialState, action) {
             } else {
                 return {
                     ...state,
+                    error: '',
                     resources,
                     hasMoreRecords: false,
                     isLoading: false,
@@ -63,6 +69,7 @@ export function resources (state = initialState, action) {
         case DiscActionTypes.FETCH_RESOURCES_MORE_STARTED: {
             return {
                 ...state,
+                error: '',
                 isScrollLoading: true
             }
         }
@@ -70,6 +77,7 @@ export function resources (state = initialState, action) {
         case  DiscActionTypes.FETCH_RESOURCES_MORE_FAILED: {
             return {
                 ...state,
+                error: action.error,
                 isScrollLoading: false
             }
         }
@@ -84,6 +92,7 @@ export function resources (state = initialState, action) {
                 if (embeddedItems.length < total) {
                     return {
                         ...state,
+                        error: '',
                         resources,
                         offset: state.offset + state.limit,
                         hasMoreRecords: true,
@@ -92,6 +101,7 @@ export function resources (state = initialState, action) {
                 } else {
                     return {
                         ...state,
+                        error: '',
                         resources,
                         hasMoreRecords: false,
                         isScrollLoading: false
@@ -101,6 +111,7 @@ export function resources (state = initialState, action) {
             } else {
                 return {
                     ...state,
+                    error: '',
                     resources,
                     hasMoreRecords: false,
                     isScrollLoading: false
