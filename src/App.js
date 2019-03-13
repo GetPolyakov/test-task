@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { AuthorizedLayout } from "./auth/containers/AuthorizedLayout/AuthorizedLayout";
+import { AuthorizedLayout } from "./auth/components/AuthorizedLayout/AuthorizedLayout";
 import { ProtectedRoute } from './auth/components/ProtectedRoute/ProtectedRoute';
 
 import { setIsUserAuth } from './auth/actions/action.set-is-user-auth.js'

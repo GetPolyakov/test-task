@@ -27,9 +27,6 @@ const DEFAULT_URL = '/disc';
 class Disc extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            folderData: [],
-        }
         this.debouncedResourcesLoad = debounce(this.fetchResourcesMore, DEBOUNCE_DELAY, {leading: false});
     }
 
