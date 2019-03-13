@@ -8,7 +8,7 @@ const initialState = {
     isLoading: true,
     isScrollLoading: false,
     hasMoreRecords: false,
-    error: ''
+    error: null,
 }
 
 export function resources (state = initialState, action) {
@@ -16,7 +16,7 @@ export function resources (state = initialState, action) {
         case DiscActionTypes.FETCH_RESOURCES_STARTED: {
             return {
                 ...state,
-                error: '',
+                error: null,
                 isLoading: true
             }
         }
@@ -39,7 +39,7 @@ export function resources (state = initialState, action) {
                 if (embeddedItems.length < total) {
                         return {
                             ...state,
-                            error: '',
+                            error: null,
                             offset: state.offset + state.limit,
                             hasMoreRecords: true,
                             isLoading: false,
@@ -48,7 +48,7 @@ export function resources (state = initialState, action) {
                 } else {
                     return {
                         ...state,
-                        error: '',
+                        error: null,
                         resources,
                         hasMoreRecords: false,
                         isLoading: false
@@ -58,7 +58,7 @@ export function resources (state = initialState, action) {
             } else {
                 return {
                     ...state,
-                    error: '',
+                    error: null,
                     resources,
                     hasMoreRecords: false,
                     isLoading: false,
@@ -69,7 +69,7 @@ export function resources (state = initialState, action) {
         case DiscActionTypes.FETCH_RESOURCES_MORE_STARTED: {
             return {
                 ...state,
-                error: '',
+                error: null,
                 isScrollLoading: true
             }
         }
@@ -89,10 +89,10 @@ export function resources (state = initialState, action) {
                 const total = resources._embedded.total;
                 const embeddedItems = resources._embedded.items;
                 resources._embedded.items = state.resources._embedded.items.concat(embeddedItems);
-                if (embeddedItems.length < total) {
+                if (resources._embedded.items.length < total) {
                     return {
                         ...state,
-                        error: '',
+                        error: null,
                         resources,
                         offset: state.offset + state.limit,
                         hasMoreRecords: true,
@@ -101,7 +101,7 @@ export function resources (state = initialState, action) {
                 } else {
                     return {
                         ...state,
-                        error: '',
+                        error: null,
                         resources,
                         hasMoreRecords: false,
                         isScrollLoading: false
@@ -111,7 +111,7 @@ export function resources (state = initialState, action) {
             } else {
                 return {
                     ...state,
-                    error: '',
+                    error: null,
                     resources,
                     hasMoreRecords: false,
                     isScrollLoading: false

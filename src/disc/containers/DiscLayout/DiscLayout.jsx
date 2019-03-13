@@ -10,19 +10,21 @@ import { Folder } from "../../components/Folder/Folder";
 import { File } from "../../components/File/File";
 import { Loader } from "../../../shared/components/Loader/Loader";
 import { InfiniteScroll } from "../../../shared/components/InfiniteScroll/InfiniteScroll";
-import { ExpectedError } from "../../../shared/components/ExpectedError/ExpectedError";
+import { Error } from "../../../shared/components/Error/Error";
 
 import { resourcesSelector } from "../../selectors/selector.resources";
 import { fetchResources } from "../../actions/action.fetch-resources";
 import { fetchResourcesMore } from "../../actions/action.fetch-resources-more";
 
 import { ResourceType } from "../../constants";
-import { NOT_FOUND_CODE } from "../../../auth/constants";
+import {NOT_FOUND_CODE, UNAUTHORIZED_CODE} from "../../../auth/constants";
 
 import './DiscLayout.scss';
 
 const DEBOUNCE_DELAY = 700;
 const DEFAULT_URL = '/disc';
+
+const SOMETHING_WENT_WRONG_MESSAGE = 'Something went wrong, please make sure you have stable connection to the internet.'
 
 class Disc extends Component {
     constructor(props) {
@@ -63,13 +65,11 @@ class Disc extends Component {
 
     fetchResourcesMore = async () => {
         try {
-            const { location, fetchResourcesMore, limit, offset, resources } = this.props;
+            const { location, fetchResourcesMore, limit, offset } = this.props;
 
             const resourcePath = this._getRequestedResourcePathByUrl(location.pathname);
 
-            if (offset < resources._embedded.total) {
-                await fetchResourcesMore(resourcePath, limit, offset);
-            }
+            await fetchResourcesMore(resourcePath, limit, offset);
 
         } catch (e) {
             if (e.response !== undefined) {
@@ -107,8 +107,17 @@ class Disc extends Component {
     render() {
         const { resources, isLoading, isScrollLoading, hasMoreRecords, error} = this.props;
 
-        if (error) {
-            return (<ExpectedError message={error} />)
+        if (error !== null) {
+            if (error.response === undefined) {
+                return (<Error message={SOMETHING_WENT_WRONG_MESSAGE} />)
+            } else if (error.response.status === NOT_FOUND_CODE) {
+                return <Redirect to={DEFAULT_URL}/>
+            } else if (error.response.status === UNAUTHORIZED_CODE) {
+                return <Loader/> 
+            } else {
+                return <Error message={SOMETHING_WENT_WRONG_MESSAGE}/>
+            }
+            
         }
 
         if (!Object.keys(resources).length !== 0 && resources.type === ResourceType.FILE) {
@@ -193,7 +202,7 @@ Disc.propTypes = {
     isLoading: PropTypes.bool,
     isScrollLoading: PropTypes.bool,
     hasMoreRecords: PropTypes.bool,
-    error: PropTypes.string,
+    error: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.object,
     match: PropTypes.object

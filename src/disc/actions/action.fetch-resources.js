@@ -29,7 +29,7 @@ export function fetchResources(resourcePath, limit) {
             dispatch(successed(resources));
         }
         catch (e) {
-            dispatch(failed('Something went wrong, please make sure you have stable connection to the internet.'));
+            dispatch(failed(e));
             throw e;
         }
     }
