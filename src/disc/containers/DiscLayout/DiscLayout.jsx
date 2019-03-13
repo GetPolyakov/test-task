@@ -17,7 +17,7 @@ import { fetchResources } from "../../actions/action.fetch-resources";
 import { fetchResourcesMore } from "../../actions/action.fetch-resources-more";
 
 import { ResourceType } from "../../constants";
-import { NOT_FOUND_CODE, UNAUTHORIZED_CODE } from "../../../auth/constants";
+import { NOT_FOUND_CODE } from "../../../auth/constants";
 
 import './DiscLayout.scss';
 
@@ -52,12 +52,8 @@ class Disc extends Component {
         } catch (e) {
             if (e.response !== undefined) {
                 const responseStatus = e.response.status;
-                if (responseStatus === UNAUTHORIZED_CODE) {
-                    return;
-                }
                 if (responseStatus === NOT_FOUND_CODE) {
                     this.props.history.push(DEFAULT_URL);
-                    return;
                 }
             }
 
@@ -78,12 +74,8 @@ class Disc extends Component {
         } catch (e) {
             if (e.response !== undefined) {
                 const responseStatus = e.response.status;
-                if (responseStatus === UNAUTHORIZED_CODE) {
-                    return;
-                }
                 if (responseStatus === NOT_FOUND_CODE) {
                     this.props.history.push(DEFAULT_URL);
-                    return;
                 }
             }
 
