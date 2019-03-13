@@ -14,6 +14,6 @@ export function auth (state = initialState, action) {
                 isLoading: false
             }
         }
+        default: return state;
     }
-    return state;
 }

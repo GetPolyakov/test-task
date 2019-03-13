@@ -1,4 +1,4 @@
-export const RESOURCE_TYPE =  Object.freeze( {
+export const ResourceType =  Object.freeze( {
     FILE: 'file',
     FOLDER: 'dir'
 });

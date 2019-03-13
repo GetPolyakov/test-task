@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import './FolderIcon.scss';
 
@@ -9,8 +8,3 @@ export const FolderIcon = props => {
     );
 };
 
-FolderIcon.propTypes = {
-    
-};
-
-export default FolderIcon;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import {connect} from "react-redux";
 import { debounce } from 'lodash';
 
 import { DiscNavbar } from "../../components/DiscNavbar/DiscNavbar";
@@ -9,9 +11,11 @@ import { File } from "../../components/File/File";
 import { Loader } from "../../../shared/components/Loader/Loader";
 import { InfiniteScroll } from "../../../shared/components/InfiniteScroll/InfiniteScroll";
 
-import { DiscService } from '../../services/service.disc';
+import { resourcesSelector } from "../../selectors/selector.resources";
+import { fetchResources } from "../../actions/action.fetch-resources";
+import { fetchResourcesMore } from "../../actions/action.fetch-resources-more";
 
-import { RESOURCE_TYPE } from "../../constants";
+import { ResourceType } from "../../constants";
 import { NOT_FOUND_CODE, UNAUTHORIZED_CODE } from "../../../auth/constants";
 
 import './DiscLayout.scss';
@@ -19,66 +23,34 @@ import './DiscLayout.scss';
 const DEBOUNCE_DELAY = 700;
 const DEFAULT_URL = '/disc';
 
-export class DiscLayout extends Component {
+class Disc extends Component {
     constructor(props) {
         super(props)
         this.state = {
             folderData: [],
-            offset: 0,
-            limit: 40,
-            isLoading: true,
-            isScrollLoading: false,
-            hasMoreRecords: false,
         }
-        this.debouncedResourcesLoad = debounce(this._fetchResourcesWithScroll, DEBOUNCE_DELAY, {leading: false});
+        this.debouncedResourcesLoad = debounce(this.fetchResourcesMore, DEBOUNCE_DELAY, {leading: false});
     }
 
 
     componentDidMount() {
-        this._fetchResources();
+        this.fetchResources();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps !== this.props) { //указать точно
-          this._fetchResources();
+        if (prevProps.location.pathname !== this.props.location.pathname) { //указать точно
+          this.fetchResources();
         }
     }
 
-    _fetchResources = async () => {
+    fetchResources = async () => {
         try {
-            const { location, history } = this.props;
-            const { limit }  = this.state;
+            const { location, fetchResources, limit } = this.props;
 
             const resourcePath = this._getRequestedResourcePathByUrl(location.pathname);
 
-            this.setState({isLoading: true})
+            await fetchResources(resourcePath, limit);
 
-            const resource = await DiscService.getResources(resourcePath, limit);
-            if (resource.type === RESOURCE_TYPE.FOLDER) {
-                const mappedResource = DiscService.mapResourcesToView(resource);
-                const total = mappedResource._embedded.total;
-                const embeddedItems = mappedResource._embedded.items;
-
-                if (embeddedItems.length < total) {
-                    this.setState((state, props) => {
-                        return {
-                            offset: state.offset + state.limit,
-                            hasMoreRecords: true,
-                            isLoading: false,
-                            folderData: embeddedItems
-                        }
-                    })
-                } else {
-                    this.setState({
-                        folderData: embeddedItems,
-                        hasMoreRecords: false,
-                        isLoading: false
-                    })
-                }
-
-            } else {
-               history.push(DEFAULT_URL);
-            }
         } catch (e) {
             const responseStatus = e.response.status;
             if (responseStatus === UNAUTHORIZED_CODE) {
@@ -93,43 +65,15 @@ export class DiscLayout extends Component {
         }
     }
 
-    _fetchResourcesWithScroll = async () => {
+    fetchResourcesMore = async () => {
         try {
-            const { location, history } = this.props;
-            const { limit, offset, folderData }  = this.state;
+            const { location, fetchResourcesMore, limit, offset, resources } = this.props;
 
             const resourcePath = this._getRequestedResourcePathByUrl(location.pathname);
 
-            this.setState({isScrollLoading: true})
-
-                const resource = await DiscService.getResources(resourcePath, limit, offset);
-                if (resource.type === RESOURCE_TYPE.FOLDER) {
-
-                    const mappedResource = DiscService.mapResourcesToView(resource);
-                    const total = mappedResource._embedded.total;
-                    const embeddedItems = mappedResource._embedded.items;
-
-                    const loadedFolderData = folderData.concat(embeddedItems);
-                    if (loadedFolderData.length < total) {
-                        this.setState((state, props) => {
-                            return {
-                                offset: state.offset + state.limit,
-                                hasMoreRecords: true,
-                                isScrollLoading: false,
-                                folderData: loadedFolderData
-                            }
-                        })
-                    } else {
-                        this.setState({
-                            folderData: loadedFolderData,
-                            hasMoreRecords: false,
-                            isScrollLoading: false
-                        })
-                    }
-
-                } else {
-                    history.push(DEFAULT_URL)
-                }
+            if (offset < resources._embedded.total) {
+                await fetchResourcesMore(resourcePath, limit, offset);
+            }
 
         } catch (e) {
             const responseStatus = e.response.status;
@@ -137,12 +81,11 @@ export class DiscLayout extends Component {
                 return;
             }
             if (responseStatus === NOT_FOUND_CODE) {
-                this.props.history.goBack();
+                this.props.history.push(DEFAULT_URL);
             } else {
                 alert('Something went wrong, please make sure you have stable connection to the internet.')
                 console.error(e);
             }
-
         }
     }
 
@@ -155,8 +98,8 @@ export class DiscLayout extends Component {
     }
 
     onFolderClicked = (folderId) => {
-        const { history } = this.props;
-        const clickedFolder = this.state.folderData.find((x) => x.resource_id === folderId);
+        const { history, resources } = this.props;
+        const clickedFolder = resources._embedded.items.find((x) => x.resource_id === folderId);
 
         if (!clickedFolder) {
             console.error(`Clicked folder with ${folderId} is undefined`)
@@ -167,7 +110,7 @@ export class DiscLayout extends Component {
     }
 
     render() {
-        const { folderData, isLoading, isScrollLoading } = this.state;
+        const { resources, isLoading, isScrollLoading, hasMoreRecords } = this.props;
 
         return (
             <div className="container d-flex flex-column disc-layout">
@@ -181,11 +124,12 @@ export class DiscLayout extends Component {
                             <InfiniteScroll
                                 useWindowScroll={true}
                                 onScroll={this.debouncedResourcesLoad}
-                                shouldHandleScroll={this.state.hasMoreRecords}
+                                shouldHandleScroll={hasMoreRecords}
                             >
                                 {
-                                    folderData.map(x => {
-                                            if (x.type === RESOURCE_TYPE.FOLDER) {
+                                    (resources.type !== ResourceType.FILE) ? //обработать пустой обджект и состояние еррор
+                                    resources._embedded.items.map(x => {
+                                            if (x.type === ResourceType.FOLDER) {
                                                 return(
                                                     <Resource key={x.resource_id}>
                                                         <Folder
@@ -194,7 +138,7 @@ export class DiscLayout extends Component {
                                                             onFolderClicked={this.onFolderClicked}/>
                                                     </Resource>
                                                 )
-                                            } else if (x.type === RESOURCE_TYPE.FILE) {
+                                            } else if (x.type === ResourceType.FILE) {
                                                 return(
                                                     <Resource key={x.resource_id}>
                                                         <File
@@ -208,6 +152,7 @@ export class DiscLayout extends Component {
                                         }
                                     )
 
+                                    : <Redirect to={DEFAULT_URL} />
                                 }
                             </InfiniteScroll>
                             {
@@ -223,6 +168,31 @@ export class DiscLayout extends Component {
     }
 }
 
-DiscLayout.propTypes = {
+export const DiscLayout = connect(
+    state => {
+        return {
+            resources: resourcesSelector(state),
+            offset: state.resources.offset,
+            limit: state.resources.limit,
+            isLoading: state.resources.isLoading,
+            isScrollLoading: state.resources.isScrollLoading,
+            hasMoreRecords: state.resources.hasMoreRecords,
+        }
+    },
+    dispatch => ({
+        fetchResources: (resourcePath, limit) => dispatch(fetchResources(resourcePath, limit)),
+        fetchResourcesMore: (resourcesPath, limit, offset) => dispatch(fetchResourcesMore(resourcesPath, limit, offset))
+    })
+)(Disc);
 
+Disc.propTypes = {
+    resources: PropTypes.object,
+    offset: PropTypes.number,
+    limit: PropTypes.number,
+    isLoading: PropTypes.bool,
+    isScrollLoading: PropTypes.bool,
+    hasMoreRecords: PropTypes.bool,
+    history: PropTypes.object,
+    location: PropTypes.object,
+    match: PropTypes.object
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FolderIcon from "./FolderIcon/FolderIcon";
+import { FolderIcon } from "./FolderIcon/FolderIcon";
 
 import './Folder.scss'
 

@@ -1,4 +1,3 @@
-import { history } from "../../index";
 import { getQueryParams } from "../../shared/utils/utils";
 
 import { KEY_OF_STORED_TOKEN, TOKEN_PARAM } from "../constants";
